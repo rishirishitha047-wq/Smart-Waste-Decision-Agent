@@ -1,0 +1,97 @@
+{
+ "pattern_tag": "#policy",
+ "agentcore_features": [],
+ "pattern_doc": "REUSABLE DECISION PATTERN: policy classification  (#policy)\n\nWhat it does\n    Classifies every incoming waste-management request into one of four categories\n    before the Strands Agent runs. The classified category is injected into the agent\n    system prompt so the LLM selects the appropriate tools without hard-coded routing.\n\nTyped questions and options\n    `category` (choice): urgent_overflow | routine_collection | bin_issue | general_information\n\nWiring\n    PolicyClassifier is called as a pre-processing step in HackathonAgent.chat():\n\n        result = self.classifier.classify(message)\n        if result[\"low_confidence\"]:\n            return clarification_reply(...)\n        system_prompt = BASE + CATEGORY_PROMPT_ADDITION[result[\"category\"]]\n        agent = Agent(system_prompt=system_prompt, ...)\n        agent(message)\n\n    This is NOT an InterventionHandler. It runs before the Strands Agent is invoked,\n    so the classification shapes the system prompt for that turn.\n\nHow to reuse it\n    Copy this file. Replace CATEGORY_QUESTION criteria with your own policy taxonomy.\n    Adjust confidence_threshold in PolicyClassifier.__init__ for your domain.",
+ "questions_code": "QUESTIONS = {\"category\": CATEGORY_QUESTION}",
+ "agent_md": "# EcoMind AI \u00e2\u20ac\u201d Intelligent Waste Management Decision Agent\n\n## Project\n\nEcoMind AI is an intelligent waste-management decision agent for the AWS Agent Experience Hackathon: Strands Decider. It helps municipal teams, campus administrators and waste-collection coordinators decide what to do about overflowing bins, collection requests, sanitation issues and routine waste-management questions.\n\n## Users\n\n- **Municipal teams**: city or council staff managing waste collection across multiple zones\n- **Campus administrators**: university, school or hospital grounds managers\n- **Waste-collection coordinators**: dispatch staff planning and scheduling collection routes\n\n## The Strands Decider Decision\n\n**Pattern**: Policy classification (`#policy`)\n\nEcoMind AI classifies every incoming request with Strands Decider 2B into one of four categories:\n\n| Category | Description |\n|---|---|\n| `urgent_overflow` | A bin is overflowing, nearly full, or causing a sanitation/health concern |\n| `routine_collection` | A request to plan, schedule or check routine waste collection |\n| `bin_issue` | A bin is damaged, inaccessible, missing or malfunctioning |\n| `general_information` | A general question or explanation request about waste management |\n\nThe classified category is injected into the agent's system prompt to guide tool selection. If confidence is below 0.7, the agent asks for clarification rather than acting \u00e2\u20ac\u201d especially for `urgent_overflow`, which is never auto-confirmed at low confidence.\n\n## Tools\n\n| Tool | Description |\n|---|---|\n| `get_bin_status` | Retrieve a bin's recorded condition, fill level, location and issue status |\n| `assess_collection_priority` | Calculate risk and collection priority scores from bin records |\n| `create_collection_plan` | Recommend a collection order by urgency, distance and vehicle capacity |\n| `report_bin_issue` | Create a simulated issue report and return its report ID |\n\n## Data\n\nRealistic synthetic data is stored in `agent/data/bins.json` (10 bins) and `agent/data/config.json` (overflow threshold: 90%, vehicle capacity: 5). All data is clearly labelled as simulated. No live sensor readings, traffic data or real dispatches are invented.\n\n## Model Configuration\n\n- **Decision model**: Strands Decider 2B (via `decider_kit.Decider`)\n- **Language model**: Amazon Bedrock (default: `amazon.nova-pro-v1:0`); configurable via `LLM_PROVIDER` and `BEDROCK_MODEL_ID` in `.env`\n- **Fallback**: local Ollama or AWS User Group Madurai cloud (see `.env.example`)\n\n## Decision Record\n\nEvery `chat()` call returns a `decisions` list with one record per Decider call:\n\n```json\n{\n  \"pattern\":       \"#policy\",\n  \"category\":      \"urgent_overflow\",\n  \"verdict\":       \"classified\",\n  \"probabilities\": {\"urgent_overflow\": 0.91, \"routine_collection\": 0.04, \"bin_issue\": 0.03, \"general_information\": 0.02},\n  \"confidence\":    0.91,\n  \"decider_ms\":    142,\n  \"action_taken\":  \"ran agent with category=urgent_overflow\",\n  \"fallback\":      false\n}\n```\n\n## Attribution\n\nBuilt with the AWS User Group Madurai Strands Decider hackathon kit.\n",
+ "llm_provider_local_runs": "ugmdu",
+ "agent_name": "EcoMind AI \u00e2\u20ac\u201d Waste Management Decision Agent",
+ "bench": {
+  "summary": {
+   "decider": {
+    "accuracy": 0.9167,
+    "decisions": 24,
+    "per_question": {
+     "category": 0.9167
+    },
+    "latency_p50_ms": 1814.5,
+    "latency_p95_ms": 2420.2,
+    "usd_per_1k_decisions": 0.035,
+    "confident_share": 0.7917,
+    "accuracy_when_confident": 0.9474,
+    "sent_to_human_at_threshold": 5
+   },
+   "llm": {
+    "accuracy": 0.7917,
+    "decisions": 24,
+    "per_question": {
+     "category": 0.7917
+    },
+    "latency_p50_ms": 10683.7,
+    "latency_p95_ms": 11608.7,
+    "usd_per_1k_decisions": 0.0,
+    "confident_share": 1.0,
+    "accuracy_when_confident": 0.7917,
+    "sent_to_human_at_threshold": 0
+   },
+   "speedup_p50": 5.89
+  },
+  "decider_model": "strands-decider-2b-hobson-v19",
+  "decider_mode": "ugmdu",
+  "llm_model": "qwen3.5-4b",
+  "cases": 24,
+  "split": "all",
+  "threshold": 0.7
+ },
+ "bench_table": "Decider: strands-decider-2b-hobson-v19 (ugmdu). 24 labelled cases, 24 decisions.\n\n| | Strands Decider 2B | qwen3.5-4b |\n|---|---|---|\n| Accuracy | 91.7% | 79.2% |\n| Latency p50 per decision | 1814 ms | 10684 ms |\n| Latency p95 | 2420 ms | 11609 ms |\n| Cost per 1,000 decisions | $0.0350 | $0.0000 |\n| Answered alone at confidence >= 0.7 | 79% | 100% |\n| Accuracy when confident | 94.7% | 79.2% |\n\nAt the median the decider was 5.9x faster than the LLM.\n",
+ "demo_turns": [
+  {
+   "user": "My headphones are broken, I want my money back.",
+   "reply": "Please provide the order ID for the headphones so I can process your refund.",
+   "decisions": [
+    {
+     "pattern": "#guardrails",
+     "tool": "refund_order",
+     "args": {
+      "amount": 249.0,
+      "order_id": "A1002"
+     },
+     "args_grounded": 0.437,
+     "explicit_request": 0.791,
+     "premature": 0.235,
+     "decider_ms": 3075,
+     "verdict": "guide"
+    }
+   ],
+   "latency_ms": 6970
+  },
+  {
+   "user": "It's order A1002, refund the full amount please.",
+   "reply": "Your refund for order A1002 has been processed. You will receive 249.0 back to your original payment method. If you have any further questions, feel free to ask.",
+   "decisions": [
+    {
+     "pattern": "#guardrails",
+     "tool": "refund_order",
+     "args": {
+      "amount": 249,
+      "order_id": "A1002"
+     },
+     "args_grounded": 0.608,
+     "explicit_request": 0.894,
+     "premature": 0.128,
+     "decider_ms": 3894,
+     "verdict": "proceed"
+    }
+   ],
+   "latency_ms": 5813
+  },
+  {
+   "user": "Is it possible to cancel an order after it ships?",
+   "reply": "Once an order has shipped, it cannot be cancelled. However, you can still request a refund after receiving the item. If you have any further questions, feel free to ask.",
+   "decisions": [],
+   "latency_ms": 940
+  }
+ ],
+ "repo_url": "https://github.com/rishirishitha047-wq/Smart-Waste-Decision-Agent",
+ "video_url": ""
+}

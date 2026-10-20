@@ -1,412 +1,570 @@
 {
+ "decider_model": "strands-decider-2b-hobson-v19",
  "rows": [
   {
    "i": 0,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "yes"
+    "category": "urgent_overflow"
    },
    "decider": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 0.5333
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.9323
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.9311
     }
    },
-   "decider_ms": 766.2346658762544,
-   "decider_server_ms": 740.02,
+   "decider_ms": 2420.2076999936253,
+   "decider_server_ms": 1120.2,
    "llm": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 1.0
-    },
-    "explicit_request": {
-     "label": "yes",
+    "category": {
+     "label": "urgent_overflow",
      "confidence": 1.0
     }
    },
-   "llm_ms": 1746.0557501763105,
-   "llm_cost": 0.000364
+   "llm_ms": 11900.619300082326,
+   "llm_cost": 0.0
   },
   {
    "i": 1,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "yes"
+    "category": "urgent_overflow"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.8638
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.8515
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.8992
     }
    },
-   "decider_ms": 350.08108406327665,
-   "decider_server_ms": 348.65,
+   "decider_ms": 1843.632600037381,
+   "decider_server_ms": 949.5,
    "llm": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.8
+    "category": {
+     "label": "bin_issue",
+     "confidence": 0.95
     }
    },
-   "llm_ms": 1248.005999950692,
-   "llm_cost": 0.0003552
+   "llm_ms": 10995.486699976027,
+   "llm_cost": 0.0
   },
   {
    "i": 2,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "no"
+    "category": "urgent_overflow"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.8325
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.5466
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.9003
     }
    },
-   "decider_ms": 252.1845828741789,
-   "decider_server_ms": 249.38,
+   "decider_ms": 3991.4130999241024,
+   "decider_server_ms": 1096.3,
    "llm": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "no",
-     "confidence": 0.95
+    "category": {
+     "label": "bin_issue",
+     "confidence": 1.0
     }
    },
-   "llm_ms": 1373.7263339571655,
-   "llm_cost": 0.000356
+   "llm_ms": 10965.468700043857,
+   "llm_cost": 0.0
   },
   {
    "i": 3,
    "expected": {
-    "args_grounded": "yes",
-    "explicit_request": "yes"
+    "category": "routine_collection"
    },
    "decider": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 0.7901
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.9806
+    "category": {
+     "label": "routine_collection",
+     "confidence": 0.9849
     }
    },
-   "decider_ms": 273.1857078615576,
-   "decider_server_ms": 271.37,
+   "decider_ms": 2141.4651998784393,
+   "decider_server_ms": 1087.0,
    "llm": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 1.0
-    },
-    "explicit_request": {
-     "label": "yes",
+    "category": {
+     "label": "routine_collection",
      "confidence": 1.0
     }
    },
-   "llm_ms": 1336.6128329653293,
-   "llm_cost": 0.00034960000000000004
+   "llm_ms": 10986.005400074646,
+   "llm_cost": 0.0
   },
   {
    "i": 4,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "no"
+    "category": "routine_collection"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.5529
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.8044
+    "category": {
+     "label": "routine_collection",
+     "confidence": 0.9227
     }
    },
-   "decider_ms": 345.66287510097027,
-   "decider_server_ms": 344.27,
+   "decider_ms": 1744.573999894783,
+   "decider_server_ms": 904.9,
    "llm": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "no",
-     "confidence": 0.9
+    "category": {
+     "label": "routine_collection",
+     "confidence": 1.0
     }
    },
-   "llm_ms": 1238.9489589259028,
-   "llm_cost": 0.0003472
+   "llm_ms": 10909.704999998212,
+   "llm_cost": 0.0
   },
   {
    "i": 5,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "no"
+    "category": "routine_collection"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.6627
-    },
-    "explicit_request": {
-     "label": "no",
-     "confidence": 0.5123
+    "category": {
+     "label": "routine_collection",
+     "confidence": 0.9682
     }
    },
-   "decider_ms": 249.4526249356568,
-   "decider_server_ms": 246.99,
+   "decider_ms": 2050.438200123608,
+   "decider_server_ms": 1062.2,
    "llm": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "no",
-     "confidence": 0.9
+    "category": {
+     "label": "routine_collection",
+     "confidence": 1.0
     }
    },
-   "llm_ms": 1200.7791670039296,
-   "llm_cost": 0.00035840000000000004
+   "llm_ms": 11608.730299863964,
+   "llm_cost": 0.0
   },
   {
    "i": 6,
    "expected": {
-    "args_grounded": "yes",
-    "explicit_request": "yes"
+    "category": "bin_issue"
    },
    "decider": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 0.7292
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.924
+    "category": {
+     "label": "bin_issue",
+     "confidence": 0.972
     }
    },
-   "decider_ms": 294.84224994666874,
-   "decider_server_ms": 292.29,
+   "decider_ms": 2187.785199843347,
+   "decider_server_ms": 926.2,
    "llm": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 1.0
-    },
-    "explicit_request": {
-     "label": "yes",
+    "category": {
+     "label": "bin_issue",
      "confidence": 1.0
     }
    },
-   "llm_ms": 1188.0924589931965,
-   "llm_cost": 0.0003632
+   "llm_ms": 11260.821999982,
+   "llm_cost": 0.0
   },
   {
    "i": 7,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "yes"
+    "category": "bin_issue"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.6338
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.9024
+    "category": {
+     "label": "bin_issue",
+     "confidence": 0.9698
     }
    },
-   "decider_ms": 237.80529107898474,
-   "decider_server_ms": 236.18,
+   "decider_ms": 1850.708399899304,
+   "decider_server_ms": 1137.0,
    "llm": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.8
+    "category": {
+     "label": "bin_issue",
+     "confidence": 1.0
     }
    },
-   "llm_ms": 1276.4757920522243,
-   "llm_cost": 0.000364
+   "llm_ms": 10811.96970003657,
+   "llm_cost": 0.0
   },
   {
    "i": 8,
    "expected": {
-    "args_grounded": "yes",
-    "explicit_request": "yes"
+    "category": "bin_issue"
    },
    "decider": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 0.768
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.9661
+    "category": {
+     "label": "bin_issue",
+     "confidence": 0.9446
     }
    },
-   "decider_ms": 294.6494158823043,
-   "decider_server_ms": 293.27,
+   "decider_ms": 1631.943300133571,
+   "decider_server_ms": 926.5,
    "llm": {
-    "args_grounded": {
-     "label": "yes",
-     "confidence": 1.0
-    },
-    "explicit_request": {
-     "label": "yes",
+    "category": {
+     "label": "bin_issue",
      "confidence": 1.0
     }
    },
-   "llm_ms": 1283.569083083421,
-   "llm_cost": 0.00036720000000000004
+   "llm_ms": 10810.513499891385,
+   "llm_cost": 0.0
   },
   {
    "i": 9,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "no"
+    "category": "general_information"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.8253
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.5989
+    "category": {
+     "label": "general_information",
+     "confidence": 0.9106
     }
    },
-   "decider_ms": 277.8216248843819,
-   "decider_server_ms": 275.87,
+   "decider_ms": 1768.8174999784678,
+   "decider_server_ms": 1079.4,
    "llm": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "no",
-     "confidence": 0.9
+    "category": {
+     "label": "general_information",
+     "confidence": 1.0
     }
    },
-   "llm_ms": 1125.3409578930587,
-   "llm_cost": 0.0003456
+   "llm_ms": 10906.76059992984,
+   "llm_cost": 0.0
   },
   {
    "i": 10,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "no"
+    "category": "general_information"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.8732
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.6179
+    "category": {
+     "label": "routine_collection",
+     "confidence": 0.6945
     }
    },
-   "decider_ms": 467.63175004161894,
-   "decider_server_ms": 465.44,
+   "decider_ms": 1637.9052000120282,
+   "decider_server_ms": 909.7,
    "llm": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "no",
-     "confidence": 0.95
+    "category": {
+     "label": "general_information",
+     "confidence": 1.0
     }
    },
-   "llm_ms": 1248.6813340801746,
-   "llm_cost": 0.0003616
+   "llm_ms": 10790.012500016019,
+   "llm_cost": 0.0
   },
   {
    "i": 11,
    "expected": {
-    "args_grounded": "no",
-    "explicit_request": "yes"
+    "category": "urgent_overflow"
    },
    "decider": {
-    "args_grounded": {
-     "label": "no",
-     "confidence": 0.7947
-    },
-    "explicit_request": {
-     "label": "yes",
-     "confidence": 0.9662
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.674
     }
    },
-   "decider_ms": 302.16504191048443,
-   "decider_server_ms": 296.76,
+   "decider_ms": 2030.0362999550998,
+   "decider_server_ms": 1104.1,
    "llm": {
-    "args_grounded": {
-     "label": "no",
+    "category": {
+     "label": "routine_collection",
      "confidence": 0.9
-    },
-    "explicit_request": {
-     "label": "yes",
+    }
+   },
+   "llm_ms": 10683.680499903858,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 12,
+   "expected": {
+    "category": "routine_collection"
+   },
+   "decider": {
+    "category": {
+     "label": "routine_collection",
+     "confidence": 0.9093
+    }
+   },
+   "decider_ms": 1678.9941999595612,
+   "decider_server_ms": 914.3,
+   "llm": {
+    "category": {
+     "label": "routine_collection",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9299.049800029024,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 13,
+   "expected": {
+    "category": "general_information"
+   },
+   "decider": {
+    "category": {
+     "label": "general_information",
+     "confidence": 0.3577
+    }
+   },
+   "decider_ms": 1840.8574000932276,
+   "decider_server_ms": 1071.4,
+   "llm": {
+    "category": {
+     "label": "bin_issue",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9191.314700059593,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 14,
+   "expected": {
+    "category": "urgent_overflow"
+   },
+   "decider": {
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.9279
+    }
+   },
+   "decider_ms": 1608.696199953556,
+   "decider_server_ms": 907.3,
+   "llm": {
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9068.096600007266,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 15,
+   "expected": {
+    "category": "urgent_overflow"
+   },
+   "decider": {
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.977
+    }
+   },
+   "decider_ms": 2378.4458998125046,
+   "decider_server_ms": 1119.1,
+   "llm": {
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9207.520500058308,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 16,
+   "expected": {
+    "category": "routine_collection"
+   },
+   "decider": {
+    "category": {
+     "label": "routine_collection",
+     "confidence": 0.8966
+    }
+   },
+   "decider_ms": 1656.6006001085043,
+   "decider_server_ms": 911.1,
+   "llm": {
+    "category": {
+     "label": "routine_collection",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9180.844299960881,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 17,
+   "expected": {
+    "category": "routine_collection"
+   },
+   "decider": {
+    "category": {
+     "label": "routine_collection",
+     "confidence": 0.4938
+    }
+   },
+   "decider_ms": 1886.5211000666022,
+   "decider_server_ms": 1094.6,
+   "llm": {
+    "category": {
+     "label": "routine_collection",
      "confidence": 0.95
     }
    },
-   "llm_ms": 1426.09425005503,
-   "llm_cost": 0.0003528
+   "llm_ms": 9171.72640003264,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 18,
+   "expected": {
+    "category": "bin_issue"
+   },
+   "decider": {
+    "category": {
+     "label": "bin_issue",
+     "confidence": 0.973
+    }
+   },
+   "decider_ms": 1593.32159999758,
+   "decider_server_ms": 911.6,
+   "llm": {
+    "category": {
+     "label": "bin_issue",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9155.987600097433,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 19,
+   "expected": {
+    "category": "bin_issue"
+   },
+   "decider": {
+    "category": {
+     "label": "bin_issue",
+     "confidence": 0.9714
+    }
+   },
+   "decider_ms": 1789.0912999864668,
+   "decider_server_ms": 1122.2,
+   "llm": {
+    "category": {
+     "label": "bin_issue",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9097.14680002071,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 20,
+   "expected": {
+    "category": "general_information"
+   },
+   "decider": {
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.9166
+    }
+   },
+   "decider_ms": 1613.926999969408,
+   "decider_server_ms": 933.7,
+   "llm": {
+    "category": {
+     "label": "general_information",
+     "confidence": 0.95
+    }
+   },
+   "llm_ms": 9281.371199991554,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 21,
+   "expected": {
+    "category": "general_information"
+   },
+   "decider": {
+    "category": {
+     "label": "general_information",
+     "confidence": 0.64
+    }
+   },
+   "decider_ms": 1814.4930999260396,
+   "decider_server_ms": 1090.8,
+   "llm": {
+    "category": {
+     "label": "general_information",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9237.666100030765,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 22,
+   "expected": {
+    "category": "urgent_overflow"
+   },
+   "decider": {
+    "category": {
+     "label": "urgent_overflow",
+     "confidence": 0.8052
+    }
+   },
+   "decider_ms": 1639.7104999050498,
+   "decider_server_ms": 900.6,
+   "llm": {
+    "category": {
+     "label": "routine_collection",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9235.79870001413,
+   "llm_cost": 0.0
+  },
+  {
+   "i": 23,
+   "expected": {
+    "category": "bin_issue"
+   },
+   "decider": {
+    "category": {
+     "label": "bin_issue",
+     "confidence": 0.9383
+    }
+   },
+   "decider_ms": 1808.2161999773234,
+   "decider_server_ms": 1096.8,
+   "llm": {
+    "category": {
+     "label": "bin_issue",
+     "confidence": 1.0
+    }
+   },
+   "llm_ms": 9391.954499995336,
+   "llm_cost": 0.0
   }
  ],
  "summary": {
   "decider": {
+   "accuracy": 0.9167,
+   "decisions": 24,
+   "per_question": {
+    "category": 0.9167
+   },
+   "latency_p50_ms": 1814.5,
+   "latency_p95_ms": 2420.2,
+   "usd_per_1k_decisions": 0.035,
+   "confident_share": 0.7917,
+   "accuracy_when_confident": 0.9474,
+   "sent_to_human_at_threshold": 5
+  },
+  "llm": {
    "accuracy": 0.7917,
    "decisions": 24,
    "per_question": {
-    "args_grounded": 0.9167,
-    "explicit_request": 0.6667
+    "category": 0.7917
    },
-   "latency_p50_ms": 294.8,
-   "latency_p95_ms": 467.6,
+   "latency_p50_ms": 10683.7,
+   "latency_p95_ms": 11608.7,
    "usd_per_1k_decisions": 0.0,
-   "confident_share": 0.6667,
-   "accuracy_when_confident": 0.9375,
-   "sent_to_human_at_threshold": 8
-  },
-  "llm": {
-   "accuracy": 0.9583,
-   "decisions": 24,
-   "per_question": {
-    "args_grounded": 0.9167,
-    "explicit_request": 1.0
-   },
-   "latency_p50_ms": 1276.5,
-   "latency_p95_ms": 1426.1,
-   "usd_per_1k_decisions": 0.1785,
    "confident_share": 1.0,
-   "accuracy_when_confident": 0.9583,
+   "accuracy_when_confident": 0.7917,
    "sent_to_human_at_threshold": 0
   },
-  "speedup_p50": 4.33
+  "speedup_p50": 5.89
  },
  "threshold": 0.7,
- "llm_model": "us.amazon.nova-pro-v1:0",
- "decider_url": "http://127.0.0.1:8099",
- "decider_mode": "local",
- "ran_at": 1791863305.9431438
+ "llm_model": "qwen3.5-4b",
+ "llm_provider": "ugmdu",
+ "llm_where": "AWS User Group Madurai cloud (qwen3.5-4b)",
+ "decider_url": "https://da25tnxy06gjk.cloudfront.net",
+ "decider_mode": "ugmdu",
+ "ran_at": 1792513108.3255768,
+ "split": "all"
 }
