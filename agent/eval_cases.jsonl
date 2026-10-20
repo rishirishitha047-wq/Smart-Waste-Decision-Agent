@@ -1,0 +1,24 @@
+{"split": "tune", "state": "A garbage bin near the school is overflowing and smells terrible.", "expected": {"category": "urgent_overflow"}, "notes": "direct overflow with sanitation concern"}
+{"split": "tune", "state": "The bin at the market square is attracting flies and is almost full.", "expected": {"category": "urgent_overflow"}, "notes": "health concern near-full bin"}
+{"split": "tune", "state": "There is a bin near the hospital entrance that is completely full and leaking.", "expected": {"category": "urgent_overflow"}, "notes": "overflow with leaking"}
+{"split": "tune", "state": "Schedule the weekly waste collection for all residential bins.", "expected": {"category": "routine_collection"}, "notes": "explicit scheduling request"}
+{"split": "tune", "state": "Which bins need to be collected this week and in what order?", "expected": {"category": "routine_collection"}, "notes": "collection planning question"}
+{"split": "tune", "state": "Plan the collection route for tomorrow morning.", "expected": {"category": "routine_collection"}, "notes": "explicit route request"}
+{"split": "tune", "state": "The bin lid near the bus terminus is broken and cannot be closed.", "expected": {"category": "bin_issue"}, "notes": "damaged bin lid"}
+{"split": "tune", "state": "A bin on the riverside walkway has a cracked base and is unusable.", "expected": {"category": "bin_issue"}, "notes": "damaged bin cracked base"}
+{"split": "tune", "state": "The recycling bin in the office complex has been chained off and is inaccessible.", "expected": {"category": "bin_issue"}, "notes": "inaccessible bin"}
+{"split": "tune", "state": "What types of waste go in the green recycling bins?", "expected": {"category": "general_information"}, "notes": "general waste sorting question"}
+{"split": "tune", "state": "How often should general waste bins be collected in a busy market area?", "expected": {"category": "general_information"}, "notes": "general collection frequency question"}
+{"split": "tune", "state": "The bin on the corner looks quite full.", "expected": {"category": "urgent_overflow"}, "notes": "borderline vague fullness"}
+{"split": "tune", "state": "Can we do a collection soon for the bins in block A?", "expected": {"category": "routine_collection"}, "notes": "borderline vague timing"}
+{"split": "tune", "state": "bin", "expected": {"category": "general_information"}, "notes": "single word low information"}
+{"split": "test", "state": "There is an overflowing bin causing a bad smell near the bus stop.", "expected": {"category": "urgent_overflow"}, "notes": "overflow with odour complaint"}
+{"split": "test", "state": "Urgent the bin near the sports ground is completely full and attracting pests.", "expected": {"category": "urgent_overflow"}, "notes": "urgent overflow with pest concern"}
+{"split": "test", "state": "Create a collection plan for this week covering all areas.", "expected": {"category": "routine_collection"}, "notes": "explicit collection plan request"}
+{"split": "test", "state": "Which bins should we collect first and why?", "expected": {"category": "routine_collection"}, "notes": "priority ordering question"}
+{"split": "test", "state": "Please report a damaged bin in the residential area near block A.", "expected": {"category": "bin_issue"}, "notes": "explicit damage report request"}
+{"split": "test", "state": "The green bin near the park has a broken wheel and cannot be moved.", "expected": {"category": "bin_issue"}, "notes": "damaged bin broken wheel"}
+{"split": "test", "state": "What is the overflow threshold used to decide when a bin needs urgent collection?", "expected": {"category": "general_information"}, "notes": "general threshold question"}
+{"split": "test", "state": "Can you explain how the collection priority score is calculated?", "expected": {"category": "general_information"}, "notes": "general explanation request"}
+{"split": "test", "state": "The bin is getting full.", "expected": {"category": "urgent_overflow"}, "notes": "ambiguous lean urgent"}
+{"split": "test", "state": "The bin near the entrance will not open.", "expected": {"category": "bin_issue"}, "notes": "tricky wording inaccessible"}

@@ -1,0 +1,15 @@
+# EcoMind AI — Amazon Bedrock AgentCore features.
+# EcoMind AI uses in-memory simulated data and does not require AgentCore Memory or Gateway.
+# Both features are disabled to keep the deployment minimal.
+
+memory:
+  enabled: false
+  name: agentmemory
+  strategies: [SEMANTIC]
+  expiry_days: 30
+
+gateway:
+  enabled: false
+  name: tools
+  authorizer: AWS_IAM
+  targets: []

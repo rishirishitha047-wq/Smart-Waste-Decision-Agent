@@ -1,0 +1,92 @@
+[
+  {
+    "id": "BIN-001",
+    "fill_level": 95,
+    "location": "Main Street near school entrance",
+    "waste_type": "general",
+    "last_collected": "2025-01-07T08:15:00Z",
+    "issue_status": "none",
+    "distance_meters": 150
+  },
+  {
+    "id": "BIN-002",
+    "fill_level": 88,
+    "location": "Central Park north gate",
+    "waste_type": "recyclable",
+    "last_collected": "2025-01-07T10:30:00Z",
+    "issue_status": "none",
+    "distance_meters": 320
+  },
+  {
+    "id": "BIN-003",
+    "fill_level": 45,
+    "location": "Residential Area Block A",
+    "waste_type": "organic",
+    "last_collected": "2025-01-09T07:00:00Z",
+    "issue_status": "none",
+    "distance_meters": 500
+  },
+  {
+    "id": "BIN-004",
+    "fill_level": 12,
+    "location": "Office Complex parking lot",
+    "waste_type": "recyclable",
+    "last_collected": "2025-01-10T06:45:00Z",
+    "issue_status": "none",
+    "distance_meters": 680
+  },
+  {
+    "id": "BIN-005",
+    "fill_level": 72,
+    "location": "Market Square east side",
+    "waste_type": "general",
+    "last_collected": "2025-01-08T09:20:00Z",
+    "issue_status": "none",
+    "distance_meters": 210
+  },
+  {
+    "id": "BIN-006",
+    "fill_level": 60,
+    "location": "University campus quad",
+    "waste_type": "recyclable",
+    "last_collected": "2025-01-08T14:00:00Z",
+    "issue_status": "none",
+    "distance_meters": 750
+  },
+  {
+    "id": "BIN-007",
+    "fill_level": 30,
+    "location": "Riverside walkway",
+    "waste_type": "general",
+    "last_collected": "2025-01-09T11:30:00Z",
+    "issue_status": "damaged",
+    "distance_meters": 900
+  },
+  {
+    "id": "BIN-008",
+    "fill_level": 55,
+    "location": "Bus terminus waiting area",
+    "waste_type": "general",
+    "last_collected": "2025-01-08T16:45:00Z",
+    "issue_status": "inaccessible",
+    "distance_meters": 430
+  },
+  {
+    "id": "BIN-009",
+    "fill_level": 8,
+    "location": "Hospital entrance",
+    "waste_type": "hazardous",
+    "last_collected": "2025-01-10T05:30:00Z",
+    "issue_status": "none",
+    "distance_meters": 1100
+  },
+  {
+    "id": "BIN-010",
+    "fill_level": 91,
+    "location": "Sports ground gate",
+    "waste_type": "general",
+    "last_collected": "2025-01-06T13:00:00Z",
+    "issue_status": "none",
+    "distance_meters": 270
+  }
+]

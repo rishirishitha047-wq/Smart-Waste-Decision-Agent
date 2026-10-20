@@ -1,0 +1,492 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoMind AI — Waste Management Decision Agent</title>
+<style>
+  :root {
+    --primary: #2d6a4f;
+    --primary-dark: #1b4332;
+    --accent: #95d5b2;
+    --accent-light: #d8f3dc;
+    --bg: #f0f7f4;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --text-muted: #6c757d;
+    --urgent: #d62828;
+    --urgent-light: #ffe5e5;
+    --routine: #2d6a4f;
+    --routine-light: #d8f3dc;
+    --issue: #e76f51;
+    --issue-light: #fde8df;
+    --info: #457b9d;
+    --info-light: #dbeaf5;
+    --warn-bg: #fff3cd;
+    --warn-border: #f0ad4e;
+    --border: #dee2e6;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Header */
+  header { background: var(--primary); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+  header .logo { font-size: 2rem; }
+  header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.3px; }
+  header p { font-size: 0.82rem; opacity: 0.85; margin-top: 2px; }
+  header .badge { margin-left: auto; background: rgba(255,255,255,0.18); border-radius: 20px; padding: 4px 12px; font-size: 0.75rem; white-space: nowrap; }
+
+  /* Layout */
+  .layout { display: grid; grid-template-columns: 1fr 360px; gap: 0; height: calc(100vh - 73px); }
+  .main-col { display: flex; flex-direction: column; overflow: hidden; }
+  .sidebar { border-left: 1px solid var(--border); overflow-y: auto; background: var(--card-bg); padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* Info bar */
+  .info-bar { background: var(--primary-dark); color: rgba(255,255,255,0.8); font-size: 0.75rem; padding: 6px 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .info-bar span { display: flex; align-items: center; gap: 4px; }
+
+  /* Chat */
+  .chat-area { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .msg { display: flex; gap: 10px; max-width: 88%; }
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .msg.agent { align-self: flex-start; }
+  .msg .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .msg.user .avatar { background: var(--primary); color: white; }
+  .msg.agent .avatar { background: var(--accent); }
+  .msg .bubble { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; font-size: 0.9rem; line-height: 1.5; box-shadow: var(--shadow); white-space: pre-wrap; }
+  .msg.user .bubble { background: var(--primary); color: white; border-color: var(--primary); }
+  .msg .ts { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; text-align: right; }
+
+  /* Clarification banner */
+  .clarification-banner { margin: 4px 16px; background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: var(--radius); padding: 10px 14px; font-size: 0.85rem; display: none; align-items: center; gap: 8px; }
+  .clarification-banner.show { display: flex; }
+
+  /* Input area */
+  .input-area { padding: 12px 16px; border-top: 1px solid var(--border); background: var(--card-bg); display: flex; gap: 10px; align-items: flex-end; }
+  .input-area textarea { flex: 1; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; font-size: 0.9rem; font-family: inherit; resize: none; outline: none; min-height: 44px; max-height: 120px; transition: border-color 0.2s; }
+  .input-area textarea:focus { border-color: var(--primary); }
+  .input-area textarea:disabled { background: #f8f9fa; }
+  .btn { background: var(--primary); color: white; border: none; border-radius: var(--radius); padding: 10px 18px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background 0.2s, opacity 0.2s; white-space: nowrap; }
+  .btn:hover:not(:disabled) { background: var(--primary-dark); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; }
+  .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+  .btn-outline:hover:not(:disabled) { background: var(--accent-light); }
+
+  /* Loading spinner */
+  .loading { display: none; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); padding: 8px 16px; }
+  .loading.show { display: flex; }
+  .spinner { width: 16px; height: 16px; border: 2px solid var(--accent); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Sidebar sections */
+  .sidebar h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
+
+  /* Decision panel */
+  .decision-panel { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: none; }
+  .decision-panel.show { display: block; }
+  .cat-badge { display: inline-flex; align-items: center; gap: 5px; border-radius: 20px; padding: 4px 10px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 10px; }
+  .cat-badge.urgent_overflow   { background: var(--urgent-light); color: var(--urgent); }
+  .cat-badge.routine_collection{ background: var(--routine-light); color: var(--routine); }
+  .cat-badge.bin_issue         { background: var(--issue-light); color: var(--issue); }
+  .cat-badge.general_information{ background: var(--info-light); color: var(--info); }
+  .cat-badge.unknown           { background: #f0f0f0; color: #666; }
+  .conf-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .conf-bar-wrap { flex: 1; height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
+  .conf-bar { height: 100%; border-radius: 4px; background: var(--primary); transition: width 0.4s; }
+  .conf-pct { font-size: 0.8rem; font-weight: 700; color: var(--primary); min-width: 36px; text-align: right; }
+  .decision-meta { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; }
+  .fallback-tag { background: #fff3cd; color: #856404; border-radius: 4px; padding: 2px 6px; font-size: 0.7rem; font-weight: 600; }
+
+  /* Bin card */
+  .bin-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; display: none; }
+  .bin-card.show { display: block; }
+  .fill-gauge-wrap { background: #e9ecef; border-radius: 4px; height: 10px; margin: 6px 0; overflow: hidden; }
+  .fill-gauge { height: 100%; border-radius: 4px; transition: width 0.4s; }
+  .fill-gauge.low    { background: #52b788; }
+  .fill-gauge.medium { background: #f4a261; }
+  .fill-gauge.high   { background: #e63946; }
+  .bin-meta { font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+  .issue-tag { background: var(--issue-light); color: var(--issue); border-radius: 4px; padding: 1px 6px; font-size: 0.7rem; font-weight: 600; }
+  .ok-tag { background: var(--routine-light); color: var(--routine); border-radius: 4px; padding: 1px 6px; font-size: 0.7rem; font-weight: 600; }
+
+  /* Collection plan card */
+  .plan-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; display: none; }
+  .plan-card.show { display: block; }
+  .plan-note { font-size: 0.72rem; color: var(--text-muted); font-style: italic; margin-bottom: 8px; border-left: 3px solid var(--accent); padding-left: 8px; }
+  .plan-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; }
+  .plan-item:last-child { border-bottom: none; }
+  .plan-rank { width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .plan-info { flex: 1; }
+  .plan-id { font-weight: 700; }
+  .plan-loc { color: var(--text-muted); font-size: 0.75rem; }
+  .overflow-dot { width: 8px; height: 8px; background: var(--urgent); border-radius: 50%; flex-shrink: 0; title: "Overflowing"; }
+
+  /* Issue report card */
+  .report-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; display: none; }
+  .report-card.show { display: block; }
+  .report-id { font-family: monospace; font-size: 0.82rem; background: #f8f9fa; padding: 4px 8px; border-radius: 4px; margin-bottom: 6px; word-break: break-all; }
+  .status-open { background: var(--issue-light); color: var(--issue); border-radius: 4px; padding: 1px 6px; font-size: 0.7rem; font-weight: 600; }
+  .dup-tag { background: #fff3cd; color: #856404; border-radius: 4px; padding: 1px 6px; font-size: 0.7rem; font-weight: 600; }
+
+  /* Decision history */
+  .history-list { display: flex; flex-direction: column; gap: 6px; }
+  .hist-item { background: #f8f9fa; border-radius: 6px; padding: 8px 10px; font-size: 0.78rem; }
+  .hist-item .hi-top { display: flex; align-items: center; gap: 6px; }
+  .hist-item .hi-time { color: var(--text-muted); margin-left: auto; font-size: 0.7rem; }
+  .hist-item .hi-conf { color: var(--text-muted); font-size: 0.72rem; margin-top: 2px; }
+
+  /* Sample prompts */
+  .samples { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 16px 0; }
+  .sample-btn { background: var(--accent-light); border: 1px solid var(--accent); color: var(--primary-dark); border-radius: 20px; padding: 5px 12px; font-size: 0.78rem; cursor: pointer; transition: background 0.15s; }
+  .sample-btn:hover { background: var(--accent); }
+
+  /* Error */
+  .error-msg { background: #f8d7da; color: #842029; border-radius: var(--radius); padding: 8px 12px; font-size: 0.83rem; margin: 4px 16px; display: none; }
+  .error-msg.show { display: block; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌿</div>
+  <div>
+    <h1>EcoMind AI</h1>
+    <p>Intelligent Waste Management Decisions</p>
+  </div>
+  <div class="badge" id="infoBar">Loading…</div>
+</header>
+
+<div class="info-bar" id="modelBar">
+  <span>🤖 <span id="llmInfo">—</span></span>
+  <span>⚡ Strands Decider 2B</span>
+  <span>📊 Simulated data</span>
+</div>
+
+<div class="layout">
+  <!-- Main column -->
+  <div class="main-col">
+    <div class="samples" id="samples">
+      <button class="sample-btn" onclick="usePrompt('A garbage bin near the school is almost overflowing. What should we do?')">🚨 Overflowing bin near school</button>
+      <button class="sample-btn" onclick="usePrompt('Create a collection plan for the bins that need urgent attention.')">🗓 Plan collection route</button>
+      <button class="sample-btn" onclick="usePrompt('Report a damaged bin in the residential area.')">🔧 Report damaged bin</button>
+      <button class="sample-btn" onclick="usePrompt('Which bins should be collected first, and why?')">📋 Priority order</button>
+      <button class="sample-btn" onclick="usePrompt('What is the overflow threshold?')">ℹ️ General info</button>
+    </div>
+
+    <div class="clarification-banner" id="clarBanner">
+      <span>⚠️</span>
+      <span>Needs clarification — the request was unclear. Please provide more detail.</span>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="loading" id="loading"><div class="spinner"></div> EcoMind AI is thinking…</div>
+
+    <div class="chat-area" id="chatArea">
+      <div class="msg agent">
+        <div class="avatar">🌿</div>
+        <div>
+          <div class="bubble">Hello! I'm EcoMind AI, your intelligent waste management assistant.
+
+I can help you with:
+• 🚨 <strong>Urgent overflows</strong> — check bin status and assess priority
+• 🗓 <strong>Collection planning</strong> — create optimised routes within vehicle capacity
+• 🔧 <strong>Bin issues</strong> — report damaged or inaccessible bins
+• ℹ️ <strong>General questions</strong> — explain waste management concepts
+
+All data shown is <em>simulated</em>. Try one of the sample prompts above or type your request below.
+
+<em>Built with the AWS User Group Madurai Strands Decider hackathon kit.</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <textarea id="msgInput" placeholder="Describe your waste management request…" rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
+        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <button class="btn" id="sendBtn" onclick="sendMsg()">Send</button>
+      <button class="btn btn-sm btn-outline" onclick="resetSession()" title="Start new session">↺</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <h3>🧠 Decision</h3>
+      <div class="decision-panel" id="decisionPanel">
+        <div id="catBadge" class="cat-badge unknown">—</div>
+        <div class="conf-row">
+          <div class="conf-bar-wrap"><div class="conf-bar" id="confBar" style="width:0%"></div></div>
+          <div class="conf-pct" id="confPct">—</div>
+        </div>
+        <div class="decision-meta" id="decisionMeta"></div>
+      </div>
+    </div>
+
+    <div>
+      <h3>🗑 Bin Status</h3>
+      <div class="bin-card" id="binCard">
+        <div id="binCardContent"></div>
+      </div>
+    </div>
+
+    <div>
+      <h3>🚛 Collection Plan</h3>
+      <div class="plan-card" id="planCard">
+        <div class="plan-note">Recommendation only — no real dispatch has occurred.</div>
+        <div id="planContent"></div>
+      </div>
+    </div>
+
+    <div>
+      <h3>🔧 Issue Report</h3>
+      <div class="report-card" id="reportCard">
+        <div id="reportContent"></div>
+      </div>
+    </div>
+
+    <div>
+      <h3>📜 Decision History</h3>
+      <div class="history-list" id="historyList">
+        <div style="font-size:0.78rem;color:var(--text-muted)">No decisions yet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATEGORY_LABELS = {
+  urgent_overflow:    { emoji: '🚨', label: 'Urgent Overflow' },
+  routine_collection: { emoji: '🗓', label: 'Routine Collection' },
+  bin_issue:          { emoji: '🔧', label: 'Bin Issue' },
+  general_information:{ emoji: 'ℹ️', label: 'General Info' },
+};
+let sessionId = 'demo-' + Math.random().toString(36).slice(2, 9);
+let decisionHistory = [];
+
+// ── Info bar ────────────────────────────────────────────────────────────────
+async function loadInfo() {
+  try {
+    const r = await fetch('/api/info');
+    const d = await r.json();
+    document.getElementById('infoBar').textContent = d.target === 'agentcore' ? '☁️ AWS Deployed' : '💻 Local';
+    document.getElementById('llmInfo').textContent = d.llm || d.bedrock_model || '—';
+  } catch {}
+}
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function ts() { return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+
+function appendMsg(role, text) {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.innerHTML = `
+    <div class="avatar">${role==='user'?'👤':'🌿'}</div>
+    <div>
+      <div class="bubble">${escHtml(text)}</div>
+      <div class="ts">${ts()}</div>
+    </div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+}
+
+function usePrompt(txt) {
+  document.getElementById('msgInput').value = txt;
+  document.getElementById('msgInput').focus();
+}
+
+function setLoading(on) {
+  document.getElementById('loading').classList.toggle('show', on);
+  document.getElementById('sendBtn').disabled = on;
+  document.getElementById('msgInput').disabled = on;
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 6000);
+}
+
+// ── Decision panel ───────────────────────────────────────────────────────────
+function renderDecision(decisions, classification) {
+  const panel = document.getElementById('decisionPanel');
+  if (!decisions || !decisions.length) { panel.classList.remove('show'); return; }
+  const d = decisions[0];
+  const cat = d.category || 'unknown';
+  const conf = d.confidence || 0;
+  const isLow = classification && classification.low_confidence;
+  const isFallback = d.fallback;
+
+  const catInfo = CATEGORY_LABELS[cat] || { emoji: '?', label: cat };
+  const badge = document.getElementById('catBadge');
+  badge.className = 'cat-badge ' + cat;
+  badge.innerHTML = catInfo.emoji + ' ' + catInfo.label;
+
+  const pct = Math.round(conf * 100);
+  document.getElementById('confBar').style.width = pct + '%';
+  document.getElementById('confPct').textContent = pct + '%';
+
+  let meta = `<b>Latency:</b> ${d.decider_ms || 0} ms<br>`;
+  meta += `<b>Verdict:</b> ${d.verdict || '—'}<br>`;
+  if (d.action_taken) meta += `<b>Action:</b> ${escHtml(d.action_taken)}<br>`;
+  if (isFallback) meta += `<br><span class="fallback-tag">⚠ Fallback — Decider unavailable</span>`;
+  document.getElementById('decisionMeta').innerHTML = meta;
+  panel.classList.add('show');
+
+  // Clarification banner
+  document.getElementById('clarBanner').classList.toggle('show', !!isLow);
+
+  // History
+  addHistory(cat, conf, isFallback);
+}
+
+function addHistory(cat, conf, fallback) {
+  const catInfo = CATEGORY_LABELS[cat] || { emoji: '?', label: cat };
+  decisionHistory.unshift({ cat, conf, fallback, time: ts() });
+  if (decisionHistory.length > 10) decisionHistory.pop();
+  const list = document.getElementById('historyList');
+  list.innerHTML = decisionHistory.map(h => {
+    const ci = CATEGORY_LABELS[h.cat] || { emoji: '?', label: h.cat };
+    return `<div class="hist-item">
+      <div class="hi-top">
+        <span class="cat-badge ${h.cat}" style="margin:0;font-size:0.7rem;padding:2px 7px">${ci.emoji} ${ci.label}</span>
+        <span class="hi-time">${h.time}</span>
+      </div>
+      <div class="hi-conf">Confidence: ${Math.round(h.conf*100)}%${h.fallback?' · <span class="fallback-tag">fallback</span>':''}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Parse reply for structured data ─────────────────────────────────────────
+function tryRenderStructured(reply) {
+  // Look for JSON blocks in the reply text
+  const jsonMatch = reply.match(/```json\s*([\s\S]*?)```/);
+  if (!jsonMatch) return;
+  try {
+    const data = JSON.parse(jsonMatch[1]);
+    // Collection plan
+    if (data.plan && Array.isArray(data.plan)) renderPlan(data);
+    // Issue report
+    if (data.report_id) renderReport(data);
+    // Bin status
+    if (data.bin_id && data.fill_level !== undefined) renderBin(data);
+  } catch {}
+}
+
+function renderBin(b) {
+  const fill = b.fill_level || 0;
+  const fillClass = fill >= 90 ? 'high' : fill >= 70 ? 'medium' : 'low';
+  const issueHtml = b.issue_status && b.issue_status !== 'none'
+    ? `<span class="issue-tag">${b.issue_status}</span>`
+    : `<span class="ok-tag">ok</span>`;
+  document.getElementById('binCardContent').innerHTML = `
+    <div style="font-weight:700;font-size:0.9rem;margin-bottom:4px">${b.bin_id}</div>
+    <div class="fill-gauge-wrap"><div class="fill-gauge ${fillClass}" style="width:${fill}%"></div></div>
+    <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px">Fill level: <strong>${fill}%</strong></div>
+    <div class="bin-meta">
+      <b>Location:</b> ${escHtml(b.location||'—')}<br>
+      <b>Waste type:</b> ${b.waste_type||'—'}<br>
+      <b>Last collected:</b> ${b.last_collected||'—'}<br>
+      <b>Status:</b> ${issueHtml}
+    </div>`;
+  document.getElementById('binCard').classList.add('show');
+}
+
+function renderPlan(data) {
+  const items = (data.plan||[]).map(p => `
+    <div class="plan-item">
+      <div class="plan-rank">${p.rank}</div>
+      <div class="plan-info">
+        <div class="plan-id">${p.bin_id}${p.overflow?'<span title="Overflowing" class="overflow-dot" style="display:inline-block;margin-left:5px;vertical-align:middle"></span>':''}</div>
+        <div class="plan-loc">${escHtml(p.location||'')} · ${p.fill_level}%</div>
+      </div>
+      <div style="font-size:0.75rem;color:var(--text-muted)">${p.priority_score}</div>
+    </div>`).join('');
+  document.getElementById('planContent').innerHTML = items || '<div style="font-size:0.8rem;color:var(--text-muted)">No bins in plan.</div>';
+  document.getElementById('planCard').classList.add('show');
+}
+
+function renderReport(r) {
+  const dupHtml = r.duplicate ? '<span class="dup-tag">Duplicate — existing report returned</span><br>' : '';
+  document.getElementById('reportContent').innerHTML = `
+    ${dupHtml}
+    <div class="report-id">${r.report_id}</div>
+    <div class="bin-meta">
+      <b>Bin:</b> ${r.bin_id}<br>
+      <b>Type:</b> ${r.issue_type||'general'}<br>
+      <b>Description:</b> ${escHtml(r.description||'')}<br>
+      <b>Created:</b> ${r.created_at||'—'}
+    </div>
+    <div style="margin-top:6px"><span class="status-open">● OPEN</span></div>`;
+  document.getElementById('reportCard').classList.add('show');
+}
+
+function hidePanels() {
+  ['binCard','planCard','reportCard'].forEach(id => document.getElementById(id).classList.remove('show'));
+  document.getElementById('clarBanner').classList.remove('show');
+}
+
+// ── Send message ─────────────────────────────────────────────────────────────
+async function sendMsg() {
+  const input = document.getElementById('msgInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  input.style.height = 'auto';
+
+  appendMsg('user', msg);
+  hidePanels();
+  setLoading(true);
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, session_id: sessionId }),
+    });
+    const data = await res.json();
+    if (data.error) { showError(data.error); appendMsg('agent', '⚠️ ' + data.error); return; }
+
+    appendMsg('agent', data.reply || '(no reply)');
+    renderDecision(data.decisions, data.classification);
+    tryRenderStructured(data.reply || '');
+  } catch (e) {
+    showError('Network error: ' + e.message);
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function resetSession() {
+  await fetch('/api/reset', { method: 'POST' });
+  sessionId = 'demo-' + Math.random().toString(36).slice(2, 9);
+  document.getElementById('chatArea').innerHTML = '';
+  hidePanels();
+  document.getElementById('decisionPanel').classList.remove('show');
+  document.getElementById('historyList').innerHTML = '<div style="font-size:0.78rem;color:var(--text-muted)">No decisions yet.</div>';
+  decisionHistory = [];
+  appendMsg('agent', 'Session reset. How can I help you with waste management today?');
+}
+
+loadInfo();
+</script>
+</body>
+</html>

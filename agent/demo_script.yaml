@@ -1,0 +1,21 @@
+title: "EcoMind AI: Intelligent Waste Management Decision Agent"
+pitch: "An AI agent that classifies waste-management requests and routes them to the right tools using Strands Decider 2B."
+features:
+  - "classify requests into urgent overflow, routine collection, bin issue or general information"
+  - "check bin status and assess collection priority for urgent overflows"
+  - "create optimised collection plans within vehicle capacity"
+  - "report and deduplicate bin issues with structured report IDs"
+  - "ask for clarification when confidence is low rather than acting on uncertainty"
+  - "run on Amazon Bedrock with Strands Decider 2B for the policy decision"
+eager: false
+intro: "EcoMind AI is a waste-management decision agent. It uses Strands Decider 2B to classify every request, then routes to the right tools. Watch the decision panel on the right to see the classification, confidence and latency for each turn."
+turns:
+  - say: "A garbage bin near the school is almost overflowing. What should we do?"
+    narrate: "An urgent overflow report. The agent classifies it, checks the bin and assesses collection priority."
+  - say: "Create a collection plan for all bins that need attention today."
+    narrate: "A routine collection planning request. The agent assesses priorities across all bins and produces an ordered plan within vehicle capacity."
+  - say: "Report a damaged bin in the residential area — it has a broken lid."
+    narrate: "A bin issue report. The agent checks the bin status and files a simulated issue report with a unique report ID."
+  - say: "What is the overflow threshold, and how is collection priority calculated?"
+    narrate: "A general information question. The agent answers from knowledge without calling tools."
+outro: "EcoMind AI uses one Strands Decider 2B policy classification per turn to drive the right workflow. All data is simulated. Built with the AWS User Group Madurai Strands Decider hackathon kit."

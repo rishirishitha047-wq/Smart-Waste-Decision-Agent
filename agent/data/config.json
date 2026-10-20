@@ -1,0 +1,6 @@
+{
+  "overflow_threshold": 90,
+  "vehicle_capacity": 5,
+  "data_note": "Simulated data only. Not from live sensors or real-time telemetry.",
+  "last_updated": "2025-01-10"
+}
